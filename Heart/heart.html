@@ -1,0 +1,383 @@
+<style>
+    html,
+    body {
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        background: #F8F9FA;
+        display: flex;
+        /* Căn giữa theo chiều ngang của flexbox */
+        justify-content: center;
+        /* Căn giữa theo chiều dọc của flexbox */
+        align-items: center;
+    }
+    
+    .box {
+        width: 100%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+    }
+    
+    canvas {
+        position: absolute;
+        /* Rộng và cao bằng 100% rộng và cao của phần tử cha */
+        width: 100%;
+        height: 100%;
+    }
+    
+    #pinkboard {
+        position: relative;
+        /* Tự động căn giữa phần tử theo cả hai chiều ngang và dọc. */
+        margin: auto;
+        height: 500px;
+        width: 500px;
+        /* Hiệu ứng animate, time 3s, lặp vô tận */
+        animation: animate 2.5s infinite;
+    }
+    
+    #pinkboard:before,
+    #pinkboard:after {
+        content: '';
+        position: absolute;
+        background: rgb(238, 4, 4);
+        width: 100px;
+        height: 160px;
+        border-top-left-radius: 50px;
+        border-top-right-radius: 50px;
+    }
+    
+    #pinkboard:before {
+        left: 100px;
+        /* Xoay 45 độ */
+        transform: rotate(-45deg);
+        /* Điểm gốc cho xoay là góc dưới cùng bên trái */
+        transform-origin: 0 100%;
+        /* Tạo hiệu ứng đổ bóng */
+        box-shadow: 0 14px 28px rgba(233, 7, 7, 0.911), 0 10px 10px rgba(243, 6, 6, 0.911);
+    }
+    
+    #pinkboard:after {
+        left: 0;
+        /* Xoay 45 độ */
+        transform: rotate(45deg); 
+        /* Điểm gốc cho xoay là góc dưới cùng bên phải */
+        transform-origin: 100% 100%;
+    }
+    /* Định nghĩa animation */
+    @keyframes animate {
+        /* Đầu tiên, giữ nguyên kích thước */
+        0% {
+            transform: scale(1);
+        }
+        /* Thu nhỏ 80% */
+        30% {
+            transform: scale(.7);
+        }
+        /* Phóng to lên 120% */
+        60% {
+            transform: scale(1.2);
+        }
+        /* Trở lại kích thước ban đầu */
+        100% {
+            transform: scale(1);
+        }
+    }
+</style>
+<div class="box">
+    <canvas id="pinkboard"></canvas>
+</div>
+<script>
+    /*
+     * Settings
+     */
+    var settings = {
+        particles: {
+            length: 3500, // maximum amount of particles số lượng tối đa của các hạt
+            duration: 2.5, // particle duration in sec thời gian tồn tại của mỗi hạt, tính bằng giây
+            velocity: 130, // particle velocity in pixels/sec vận tốc của mỗi hạt, tính bằng pixel/giây
+            effect: -1.2, // play with this for a nice effect 
+            size: 15, // particle size in pixels kích thước của mỗi hạt, tính bằng pixel
+        },
+    };
+    /*
+     * RequestAnimationFrame polyfill
+     */
+    (function() {
+        var b = 0;
+        var c = ["ms", "moz", "webkit", "o"]; //mảng c chứa các tiền tố của các trình duyệt khác nhau được tạo ra
+        // Vòng lặp kiểm tra xem trình duyệt có hỗ trợ requestAnimationFrame và cancelAnimationFrame không. 
+        // Nếu có, sẽ sử dụng phiên bản của trình duyệt đó.
+        // Nếu trình duyệt không hỗ trợ requestAnimationFrame, một phiên bản tương thích ngược sẽ được tạo ra sử dụng setTimeout.
+        // Nếu trình duyệt không hỗ trợ cancelAnimationFrame, một phiên bản tương thích ngược sẽ được tạo ra sử dụng clearTimeout.
+        for (var a = 0; a < c.length && !window.requestAnimationFrame; ++a) {
+            window.requestAnimationFrame = window[c[a] + "RequestAnimationFrame"];
+            window.cancelAnimationFrame = window[c[a] + "CancelAnimationFrame"] || window[c[a] + "CancelRequestAnimationFrame"]
+        }
+        if (!window.requestAnimationFrame) {
+            window.requestAnimationFrame = function(h, e) {
+                var d = new Date().getTime();
+                var f = Math.max(0, 16 - (d - b));
+                var g = window.setTimeout(function() {
+                    h(d + f)
+                }, f);
+                b = d + f;
+                return g
+            }
+        }
+        if (!window.cancelAnimationFrame) {
+            window.cancelAnimationFrame = function(d) {
+                clearTimeout(d)
+            }
+        }
+    }());
+    /*
+     * Point class
+     */
+    var Point = (function() {
+        // Hàm khởi tạo
+        function Point(x, y) {
+            this.x = (typeof x !== 'undefined') ? x : 0;
+            this.y = (typeof y !== 'undefined') ? y : 0;
+        }
+        // Tạo ra một bản sao của đối tượng Point hiện tại và trả về bản sao đó
+        Point.prototype.clone = function() {
+            return new Point(this.x, this.y);
+        };
+        // Nếu không có tham số length được truyền vào, nó sẽ trả về độ dài của vector từ gốc tọa độ đến điểm (x, y).
+        // Nếu có tham số length được truyền vào, nó sẽ đặt độ dài của vector từ gốc tọa độ đến điểm (x, y) bằng length, 
+        // và trả về đối tượng Point đã được điều chỉnh.
+        Point.prototype.length = function(length) {
+            if (typeof length == 'undefined')
+                return Math.sqrt(this.x * this.x + this.y * this.y);
+            this.normalize();
+            this.x *= length;
+            this.y *= length;
+            return this;
+        };
+        // Chuẩn hóa vector từ gốc tọa độ đến điểm (x, y) (đặt độ dài của vector bằng 1), 
+        // và trả về đối tượng Point đã được điều chỉnh.
+        Point.prototype.normalize = function() {
+            var length = this.length();
+            this.x /= length;
+            this.y /= length;
+            return this;
+        };
+        return Point;
+    })();
+    /*
+     * Particle class
+     */
+    var Particle = (function() {
+        // Hàm khởi tạo
+        function Particle() {
+            this.position = new Point();
+            this.velocity = new Point();
+            this.acceleration = new Point();
+            this.age = 0;
+        }
+        // Khởi tạo đối tượng Particle với vị trí (x, y), 
+        // vận tốc (dx, dy), gia tốc (được tính từ vận tốc và hiệu ứng từ cài đặt hạt), và đặt tuổi là 0.
+        Particle.prototype.initialize = function(x, y, dx, dy) {
+            this.position.x = x;
+            this.position.y = y;
+            this.velocity.x = dx;
+            this.velocity.y = dy;
+            this.acceleration.x = dx * settings.particles.effect;
+            this.acceleration.y = dy * settings.particles.effect;
+            this.age = 0;
+        };
+        // Cập nhật vị trí, vận tốc, và tuổi của hạt dựa trên thời gian đã trôi qua (deltaTime).
+        Particle.prototype.update = function(deltaTime) {
+            this.position.x += this.velocity.x * deltaTime;
+            this.position.y += this.velocity.y * deltaTime;
+            this.velocity.x += this.acceleration.x * deltaTime;
+            this.velocity.y += this.acceleration.y * deltaTime;
+            this.age += deltaTime;
+        };
+        // Vẽ hạt lên một ngữ cảnh (context) sử dụng một hình ảnh (image). 
+        // Kích thước của hạt và độ trong suốt của nó được tính toán dựa trên tuổi của nó 
+        // so với thời gian tồn tại tối đa của hạt (được lấy từ cài đặt hạt).
+        Particle.prototype.draw = function(context, image) {
+            function ease(t) {
+                return (--t) * t * t + 1;
+            }
+            var size = image.width * ease(this.age / settings.particles.duration);
+            context.globalAlpha = 1 - this.age / settings.particles.duration;
+            context.drawImage(image, this.position.x - size / 2, this.position.y - size / 2, size, size);
+        };
+        return Particle;
+    })();
+    /*
+     * ParticlePool class
+     */
+    var ParticlePool = (function() {
+        var particles,
+            firstActive = 0,
+            firstFree = 0,
+            duration = settings.particles.duration;
+        // Hàm khởi tạo
+        function ParticlePool(length) {
+            // create and populate particle pool
+            particles = new Array(length);
+            for (var i = 0; i < particles.length; i++)
+                particles[i] = new Particle();
+        }
+        // Thêm một hạt mới vào vị trí firstFree trong mảng particles
+        ParticlePool.prototype.add = function(x, y, dx, dy) {
+            particles[firstFree].initialize(x, y, dx, dy);
+            // handle circular queue xử lý trường hợp mảng particles đầy
+            firstFree++;
+            if (firstFree == particles.length) firstFree = 0;
+            if (firstActive == firstFree) firstActive++;
+            if (firstActive == particles.length) firstActive = 0;
+        };
+        // Cập nhật vị trí, vận tốc, và tuổi của tất cả các hạt hoạt động dựa trên thời gian đã trôi qua (deltaTime). 
+        // Sau đó loại bỏ các hạt không hoạt động (các hạt có tuổi lớn hơn duration).
+        ParticlePool.prototype.update = function(deltaTime) {
+            var i;
+
+            // update active particles
+            if (firstActive < firstFree) {
+                for (i = firstActive; i < firstFree; i++)
+                    particles[i].update(deltaTime);
+            }
+            if (firstFree < firstActive) {
+                for (i = firstActive; i < particles.length; i++)
+                    particles[i].update(deltaTime);
+                for (i = 0; i < firstFree; i++)
+                    particles[i].update(deltaTime);
+            }
+
+            // remove inactive particles
+            while (particles[firstActive].age >= duration && firstActive != firstFree) {
+                firstActive++;
+                if (firstActive == particles.length) firstActive = 0;
+            }
+
+
+        };
+        // Vẽ tất cả các hạt hoạt động lên một ngữ cảnh (context) sử dụng một hình ảnh (image).
+        ParticlePool.prototype.draw = function(context, image) {
+            // draw active particles
+            if (firstActive < firstFree) {
+                for (i = firstActive; i < firstFree; i++)
+                    particles[i].draw(context, image);
+            }
+            if (firstFree < firstActive) {
+                for (i = firstActive; i < particles.length; i++)
+                    particles[i].draw(context, image);
+                for (i = 0; i < firstFree; i++)
+                    particles[i].draw(context, image);
+            }
+        };
+        return ParticlePool;
+    })();
+    /*
+     * Putting it all together
+     */
+    (function(canvas) {
+        // Tạo ra một ngữ cảnh vẽ 2D trên thẻ canvas
+        var context = canvas.getContext('2d'),
+            particles = new ParticlePool(settings.particles.length),
+            particleRate = settings.particles.length / settings.particles.duration, // particles/sec
+            time;
+
+        // get point on heart with -PI <= t <= PI
+        // Tính toán điểm trên hình trái tim dựa trên tham số t
+        function pointOnHeart(t) {
+            return new Point(
+                160 * Math.pow(Math.sin(t), 3),
+                130 * Math.cos(t) - 50 * Math.cos(2 * t) - 20 * Math.cos(3 * t) - 10 * Math.cos(4 * t) + 25
+            );
+        }
+
+        // creating the particle image using a dummy canvas
+        var image = (function() {
+            var canvas = document.createElement('canvas'),
+                context = canvas.getContext('2d');
+            canvas.width = settings.particles.size;
+            canvas.height = settings.particles.size;
+            // helper function to create the path
+            function to(t) {
+                var point = pointOnHeart(t);
+                point.x = settings.particles.size / 2 + point.x * settings.particles.size / 350;
+                point.y = settings.particles.size / 2 - point.y * settings.particles.size / 350;
+                return point;
+            }
+            // create the path
+            context.beginPath();
+            var t = -Math.PI;
+            var point = to(t);
+            context.moveTo(point.x, point.y);
+            while (t < Math.PI) {
+                t += 0.01; // baby steps!
+                point = to(t);
+                context.lineTo(point.x, point.y);
+            }
+            context.closePath();
+            // create the fill
+            context.fillStyle = '#00BFFF';
+            context.fill();
+            // create the image
+            var image = new Image();
+            image.src = canvas.toDataURL();
+            return image;
+        })();
+
+        // render that thing!
+        function render() {
+            // hàm chính để vẽ và cập nhật hiệu ứng hạt, được gọi liên tục thông qua requestAnimationFrame(render)
+            // next animation frame
+            requestAnimationFrame(render);
+
+            // update time
+            var newTime = new Date().getTime() / 1000,
+                deltaTime = newTime - (time || newTime);
+            time = newTime;
+
+            // clear canvas
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            // create new particles
+            var amount = particleRate * deltaTime;
+            for (var i = 0; i < amount; i++) {
+                var pos = pointOnHeart(Math.PI - 2 * Math.PI * Math.random());
+                var dir = pos.clone().length(settings.particles.velocity);
+                particles.add(canvas.width / 2 + pos.x, canvas.height / 2 - pos.y, dir.x, -dir.y);
+            }
+
+            // update and draw particles
+            particles.update(deltaTime);
+            particles.draw(context, image);
+        }
+
+        // handle (re-)sizing of the canvas thay đổi kích thước của thẻ canvas để phù hợp với kích thước của cửa sổ trình duyệt
+        function onResize() {
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+        }
+        window.onresize = onResize;
+
+        // delay rendering bootstrap khởi tạo hiệu ứng hạt sau một khoảng thời gian ngắn (10 mili giây).
+        setTimeout(function() {
+            onResize();
+            render();
+        }, 10);
+    })(document.getElementById('pinkboard')); // thẻ canvas mà hiệu ứng hạt sẽ được vẽ lên
+</script>
+<div class="center-text" , style="background-color:rgb(0, 0, 0);
+    width: 100%;
+    color: rgb(212, 19, 19);
+    height:100%;
+    font-size: 31px;
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5px;
+    text-align: center;">
+</div>

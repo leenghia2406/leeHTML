@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+ <!-- 
+    Tips: Bôi đen + Ctrl D để chọn toàn bộ cụm, sau đó thay đổi 
+    Create project base: ! + Tab
+ -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M-TP Tour</title>
+    <!-- Tạo icon trang web -->
+    <link rel="icon" href="./assets/img/logo-Sơn-Tùng-M-TP-Entertainment-7-1.jpg" type="image/x-icon" />
+    <!-- link:css + enter -->
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/responsive.css">
+    <link rel="stylesheet" href="./assets/fonts/themify-icons/themify-icons.css">
+</head>
+<body>
+    <!-- 
+        Tạo một thẻ div chứa toàn bộ trang web
+        Cách viết tắt để tạo thẻ div: .tênclass + tab, #tênid + tab
+     -->
+    <div id="main">
+        <!-- 
+            Tạo 4 thành phần chính: header, slider, content, footer 
+            Ctrl Shift L + Alt Shift mũi tên để chọn đồng loạt
+        -->
+        <div id="header">
+            <!-- Tạo 5 thẻ li cùng id nav + a: ul#nav>li*5>a -->
+            <!-- Begin navigation -->
+            <ul id="nav">
+                <li><a href="#">trang chủ</a></li>
+                <li><a href="#band">giới thiệu</a></li>
+                <li><a href="#tour">Tour diễn</a></li>
+                <li><a href="#contact">liên hệ</a></li>
+                <li>
+                    <a href="">
+                        More
+                        <!-- Thêm icon down cho More -->
+                        <i class="nav-arrow-down ti-angle-down"></i>
+                    </a>
+                    <!-- Tạo 3 thẻ li con của More -->
+                    <ul class="subnav">
+                        <li><a href="">Merchandise</a></li>
+                        <li><a href="">Extras</a></li>
+                        <li><a href="">Media</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- End navigation -->
+            <!-- Begin search button -->
+            <div class="search-btn">
+                <i class="search-icon ti-search"></i>
+            </div>
+            <div class="mobile-menu-btn">
+                <i class="menu-icon ti-menu">
+
+                </i>
+            </div>
+            <!-- End search button -->
+        </div>
+
+        <div id="slider">
+            <!-- Tạo text cho slider -->
+            <div class="text-content">
+                <h2 class="text-heading">Los Angeles</h2>
+                <div class="text-description">We had the best time playing at Venice Beach!</div>
+            </div>
+        </div>
+
+        <div id="content">
+            <!-- About section -->
+            <div id = "band" class="content-section">
+                <h2 class="section-heading">SƠN TÙNG M-TP</h2>
+                <p class="section-sub-heading">Sky ơiiiiiii!</p>
+                <p class="about-text">Chào mừng các bạn đến với M-TP Tour, nền tảng trực tuyến chính thức của tớ! Tớ là Tùng, và đây là không gian chia sẻ những điều đặc biệt về cuộc sống và sự nghiệp của mình. Từ những bước đi đầu tiên, tớ đã nhận ra mình không hề cô đơn, vì bên cạnh luôn có gia đình, đồng nghiệp và hơn hết là các bạn, những Sky luôn sát cánh bên Tùng từ những ngày đầu cho đến thành công hôm nay. Vậy nên, Tùng dành thời gian cho trang web này để có một nơi dành riêng cho Sky, những người đã luôn ủng hộ tớ trong mọi hành trình. M-TP Tour là nơi các bạn có thể cập nhật thông tin mới nhất về Tùng, thưởng thức các MV, đặt vé cho các tour diễn và hơn hết đây là lời cảm ơn chân thành của Tùng tới Sky, những người đã đồng hành của tớ qua từng giai đoạn thăng trầm của sự nghiệp. Mỗi một giây, một click trên trang web này đều là một chia sẻ đặc biệt, và tớ rất hạnh phúc vì các cậu đã luôn bên cạnh tớ. Cảm ơn sự đồng hành không mệt mỏi và tình cảm mọi người dành cho Tùng suốt những năm tháng qua, cảm ơn mọi người đã yêu thương tấm thân nhỏ bé này, Sky ơiiii, tớ yêu tất cả các cậu !!!</p>
+                <div class="row member-list">
+                    <div class="col col-third text-center">
+                        <p class="member-name">2021</p>
+                        <img src="./assets/img/singer/173292019-315063713309362-6329146106221360649-n-00272556-1619793786.jpg" alt="" class="member-img">
+                    </div>
+                    <div class="col col-third text-center">
+                        <p class="member-name">2022</p>
+                        <img src="./assets/img/singer/ca-si-son-tung-mtp-4-16739441877612002597411-1673968383898-16739683840441210468120.jpg" alt="" class="member-img">
+                    </div>
+                    <div class="col col-third text-center">
+                        <p class="member-name">2023</p>
+                        <img src="./assets/img/singer/son-tung-mtp-1697273184168953378334.jpg" alt="" class="member-img">
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="row member-list">
+                    <div class="col col-third text-center">
+                        <p class="member-name">2021</p>
+                        <img src="./assets/img/singer/173292019-315063713309362-6329146106221360649-n-00272556-1619793786.jpg" alt="" class="member-img">
+                    </div>
+                    <div class="col col-third text-center">
+                        <p class="member-name">2022</p>
+                        <img src="./assets/img/singer/ca-si-son-tung-mtp-4-16739441877612002597411-1673968383898-16739683840441210468120.jpg" alt="" class="member-img">
+                    </div>
+                    <div class="col col-third text-center">
+                        <p class="member-name">2023</p>
+                        <img src="./assets/img/singer/son-tung-mtp-1697273184168953378334.jpg" alt="" class="member-img">
+                    </div>
+                    <div class="clear"></div>
+                </div>
+               
+            </div>
+
+            <!-- Tour section -->
+            <div id = "tour" class="tour-section">
+                <div class="content-section">
+                    <h2 class="section-heading text-white">TOUR DATES</h2>
+                    <p class="section-sub-heading text-white">Remember to book your tickets!</p>
+                    <!-- Tickets -->
+                    <ul class="ticket-list">
+                        <li>September<span class="sold-out">Sold out</span></li>
+                        <li>October<span class="sold-out">Sold out</span></li>
+                        <li>November<span class="quantity">23</span></li>
+                    </ul>   
+                    <!-- Place -->
+                    <div class="row places-list">
+                        <div class="col col-third">
+                            <img src="./assets/img/place/ho-hoan-kiem-2.jpg" alt="New York" class="place-img">
+                            <div class="place-body">
+                                <h3 class="place-heading">Hà Nội</h3>
+                                <p class="place-time">28 tháng 12 2023</p>
+                                <p class="place-desc">Praesent tincidunt sed tellus ut rutrum sed vitae justo.</p>
+                                <button class="btn js-buy-ticket">Buy Tickets</button>
+                            </div>
+                        </div>
+
+                        <div class="col col-third">
+                            <img src="./assets/img/place/thanh-pho-thu-duc-tp-ho-chi-minh-41120.jpg" alt="New York" class="place-img">
+                            <div class="place-body">
+                                <h3 class="place-heading">Thành Phố Hồ Chí Minh</h3>
+                                <p class="place-time">2 tháng 3 2024</p>
+                                <p class="place-desc">Praesent tincidunt sed tellus ut rutrum sed vitae justo.</p>
+                                <button class="btn js-buy-ticket">Buy Tickets</button>
+                            </div>
+                        </div>
+
+                        <div class="col col-third">
+                            <img src="./assets/img/place/la-ng-hoa-da-le-cha-nh-hue-te-t-vnexpress-1-1576329867.jpg" alt="New York" class="place-img">
+                            <div class="place-body">
+                                <h3 class="place-heading">Phan Thiết</h3>
+                                <p class="place-time">24 tháng 6 2024</p>
+                                <p class="place-desc">Praesent tincidunt sed tellus ut rutrum sed vitae justo.</p>
+                                <button class="btn js-buy-ticket">Buy Tickets</button>
+                            </div>
+                        </div>
+                        <!-- Su dung lop clear để ôm toàn bộ -->
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Begin: Contact section -->
+            <div id = "contact" class="content-section">
+                <h2 class="section-heading">CONTACT</h2>
+                <p class="section-sub-heading">Fan? Drop a note!</p>
+
+                <div class="row contact-content">
+                    <div class="col col-half contact-info">
+                        <p><i class="ti-location-pin"></i>Thành phố Hồ Chí Minh,Việt Nam</p>
+                        <p><i class="ti-mobile"></i>Phone:+98 999999999</p>
+                        <p><i class="ti-email"></i>Email: ilovesky@gmail.com</p>
+                    </div>
+                    <div class="col col-half contact-form">
+                        <form action="">
+                            <div class="row">
+                                <div class="col col-half">
+                                    <input type="text" name="" placeholder="Name" required id="" class="form-control">
+                                </div>
+                                <div class="col col-half">
+                                    <input type="email" name="" placeholder="Email" required id="" class="form-control">
+                                </div>
+
+                            </div>
+                            <div class="row mt-8">
+                                <div class="col col-full">
+                                    <input type="text" name="" placeholder="Message" required id="" class="form-control">
+                                </div>
+                            </div>
+                            <input class="btn pull-right mt-16" type="submit" value="SEND">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- End: Contact section -->
+            <div class="map-section">
+                <img src="./assets/img/map.jpg" alt="Map">
+            </div>
+        </div>
+
+        <div id="footer">
+            <div class="socials-list">
+                <a href=""><i class = "ti-facebook"></i></a>
+                <a href=""><i class = "ti-instagram"></i></a>
+                <a href=""><i class = "ti-pinterest"></i></a>
+                <a href=""><i class = "ti-twitter"></i></a>
+                <a href=""><i class = "ti-linkedin"></i></a>
+                <a href=""><i class = "ti-youtube"></i></a>
+            </div>
+            <p class="copyright">Powered by <a href="">w3.css</a></p>
+        </div>
+
+    </div>
+    <div class="modal js-modal open">
+        <div class="modal-container js-modal-container">
+            <div class="modal-close js-modal-close">
+                <i class="ti-close"></i>
+            </div>
+            <header class="modal-header">
+                <i class="modal-heading-icon ti-bag"></i>
+                Tickets
+            </header>
+            <div class="modal-body">
+                <!-- for chỉ dùng với id để tiện cho user-->
+                <label for="ticket-quantity" class="modal-label">
+                    <i class="ti-shopping-cart"></i>
+                    Tickets, $15 per person
+                </label>
+                <input id="ticket-quantity" type="text" class="modal-input" placeholder="How many ?">
+
+                <label for="ticket-email" class="modal-label">
+                    <i class="ti-user"></i>
+                    Sent to
+                </label>
+                <input id="ticket-email" type="email" class="modal-input" placeholder="Enter email...">
+                <button id="buy-tickets">
+                    Pay <i class="ti-check"></i>
+                </button>
+            </div>
+            <footer class="modal-footer">
+                <p class="modal-help">Need <a href="">help ?</a></p>
+            </footer>
+        </div>
+    </div>
+    <!-- Xử lí modal -->
+    <script>
+        const buyBtns = document.querySelectorAll('.js-buy-ticket')
+        const modal = document.querySelector('.js-modal')
+        const modalClose = document.querySelector('.js-modal-close')
+        const modalContainer = document.querySelector('.js-modal-container')
+        function showBuyTicket(){
+            // alert("Show")
+            modal.classList.add('open')
+        }
+        function hideBuyTicket(){
+            modal.classList.remove('open')
+        }
+        for (const buyBtn of buyBtns){
+            buyBtn.addEventListener('click', showBuyTicket)
+        }
+        modalClose.addEventListener('click', hideBuyTicket)
+        modal.addEventListener('click', hideBuyTicket)
+        modalContainer.addEventListener('click', function(event){
+            event.stopPropagation()
+        })
+    </script>
+    
+</body>
+</html>
